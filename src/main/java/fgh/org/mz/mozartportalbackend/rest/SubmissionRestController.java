@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -53,7 +55,7 @@ public class SubmissionRestController {
 			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 			Optional<User> user = userService.findByUsername(userDetails.getUsername());
 
-			Pageable paging = PageRequest.of(page, size);
+			Pageable paging = PageRequest.of(page, size, Sort.by("id").descending());
 			Page<Submission> pageSubmission = submissionService.findByUser(user.get(), paging);
 			List<Submission> submission = pageSubmission.getContent();
 
